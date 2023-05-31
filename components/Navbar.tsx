@@ -65,19 +65,19 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <a
-              href="#"
+            <Link
+              href={"/device"}
               className="text-gray-900 dark:text-white hover:underline  mx-6 "
             >
-              Company
-            </a>
+              Device
+            </Link>
           </li>
           <li>
             <a
               href="#"
               className="text-gray-900 dark:text-white hover:underline  mx-6 "
             >
-              Team
+              test1
             </a>
           </li>
           <li>
@@ -85,7 +85,7 @@ const Navbar = () => {
               href="#"
               className="text-gray-900 dark:text-white hover:underline mx-6 "
             >
-              Features
+              test2
             </a>
           </li>
         </ul>
