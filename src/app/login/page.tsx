@@ -23,12 +23,11 @@ const Login: FC<loginProps> = ({}) => {
       })
       .then((res) => {
         setErrorMessage("");
-        console.log("login",res);
         localStorage.setItem("access_token", res.data.access_token)
         window.location.href = "/device"
       })
       .catch((err) => {
-        console.log("err ",err)
+        console.error(err)
         if (err.response?.data?.status === 401) {
           setErrorMessage(err.response.data.message);
         } else {

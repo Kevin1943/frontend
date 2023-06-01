@@ -5,7 +5,7 @@ import { FC, FormEvent, useState } from "react";
 interface loginProps {}
 
 const Signup: FC<loginProps> = ({}) => {
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessages, setErrorMessages] = useState([]);
 
   const handleSubmit = async (event: FormEvent) => {
     //Prevent page reload
@@ -20,13 +20,17 @@ const Signup: FC<loginProps> = ({}) => {
         email: email.value,
       })
       .then((res) => {
-        setErrorMessage("");
-        console.log("signup");
-        // TODO: redirect to protected homepage
+        setErrorMessages([]);
+        localStorage.setItem("access_token", res.data.access_token)
+        window.location.href = "/device"
       })
       .catch((err) => {
-        if (err.response?.data?.status === 401) {
-          setErrorMessage(err.response.data.message);
+        console.error(err);
+        if (
+          err.response?.data?.statusCode === 400 ||
+          err.response?.data?.status === 400
+        ) {
+          setErrorMessages(err.response.data.message);
         } else {
           throw new Error(err);
         }
@@ -88,16 +92,19 @@ const Signup: FC<loginProps> = ({}) => {
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
+                  minLength={6}
                 />
               </div>
-              {errorMessage && (
-                <div
-                  className="mt-4 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-                  role="alert"
-                >
-                  {errorMessage}
-                </div>
-              )}
+              {errorMessages &&
+                errorMessages.map((errorMessage, i) => (
+                  <div
+                    className="mt-4 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                    role="alert"
+                    key={i}
+                  >
+                    {errorMessage}
+                  </div>
+                ))}
               <button
                 type="submit"
                 className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"

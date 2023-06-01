@@ -20,7 +20,6 @@ const Navbar = () => {
       if (access_token) {
         let config = {
           method: "get",
-          maxBodyLength: Infinity,
           url: "http://localhost:8080/auth/profile",
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -29,13 +28,18 @@ const Navbar = () => {
         axios
           .request(config)
           .then((response) => {
-            console.log("a", JSON.stringify(response.data));
             if (response.status === 200 && response.data) {
               setUser(() => ({ ...response.data, isLogin: true }));
             }
           })
           .catch((error) => {
-            console.log(error);
+            setUser({
+              username: "",
+              userId: "",
+              email: "",
+              isLogin: false,
+            });
+            router.push("/login");
           });
       }
     }
@@ -49,7 +53,7 @@ const Navbar = () => {
       email: "",
       isLogin: false,
     });
-    router.push('/login')
+    router.push("/login");
   }
 
   return (
